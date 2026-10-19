@@ -28,9 +28,9 @@ export function applyTheme(s) {
 }
 
 export function setDim(on) {
-  root.setProperty("--bgl", on ? "5%" : "8%");
-  root.setProperty("--sl", on ? "8%" : "12%");
-  root.setProperty("--ll", on ? "15%" : "21%");
+  root.setProperty("--bgl", on ? "2%" : "3%");
+  root.setProperty("--sl", on ? "5%" : "7%");
+  root.setProperty("--ll", on ? "11%" : "15%");
 }
 
 // localStorage can be missing or throw (private mode, blocked storage) — never let that break the page.
