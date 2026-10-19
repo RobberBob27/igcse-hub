@@ -310,6 +310,13 @@ body,.subj,.track,.browser,.note,.btn,.chip,input,select,textarea,header.top,.qc
 .weak li small{color:var(--muted);display:block;font-size:12px}
 .side-empty{font-size:13.5px;color:var(--muted)}
 
+/* ---------- login ---------- */
+.login-dlg{border:1.5px solid var(--line);border-radius:16px;background:var(--surface);color:var(--ink);padding:0;width:min(420px,calc(100vw - 32px))}
+.login-dlg::backdrop{background:#000a}
+.login-form{display:flex;flex-direction:column;gap:10px;padding:24px}
+.login-form h2{font-size:24px}
+.login-form .lead{margin:0 0 4px}
+
 /* ---------- responsive ---------- */
 @media (max-width:860px){
   .hero{grid-template-columns:1fr;gap:28px}
@@ -326,7 +333,7 @@ body,.subj,.track,.browser,.note,.btn,.chip,input,select,textarea,header.top,.qc
 @media (max-width:560px){
   .wrap{padding:0 16px}
   .bar{gap:10px}
-  .bar>.btn{display:none}
+  .bar>.btn{flex:none;padding:5px 10px}
   .composer-hint span:first-child{display:none}
   .qrow>div{min-width:0;width:100%}
   .res-top{gap:18px}
