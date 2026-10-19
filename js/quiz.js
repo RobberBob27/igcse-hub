@@ -175,11 +175,12 @@ async function generate() {
   try {
     const res = await fetch("/api/quiz", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "X-Access-Code": getAccessCode() },
       body: JSON.stringify({ subject: subject, topic: topic, difficulty: diff, count: n })
     });
     let data = null;
     try { data = await res.json(); } catch (e) { /* non-JSON */ }
+    if (res.status === 401) needLogin();
     if (!res.ok || !data || data.error) throw new Error((data && data.error) || "Quiz service unavailable (" + res.status + ").");
     if (!Array.isArray(data.questions) || !data.questions.length) throw new Error("No questions came back. Try a different topic.");
     start({ subject: subject, topic: topic || data.title || nm(subject), difficulty: diff, questions: data.questions });
