@@ -3,7 +3,7 @@
    ========================================================== */
 :root{
   box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
-  --h:150;--s:40%;--a:65%;--l:58%;--is:40%;
+  --h:150;--s:18%;--a:80%;--l:52%;--is:40%;
   --bgl:8%;--sl:12%;--ll:21%;--ad:0%;
   --bg:hsl(var(--h) var(--s) var(--bgl));--surface:hsl(var(--h) var(--s) var(--sl));--line:hsl(var(--h) var(--s) var(--ll));
   --ink:hsl(var(--h) var(--is) 94%);--muted:hsl(var(--h) calc(var(--is) * .6) 68%);
