@@ -9,6 +9,7 @@
 // Environment variables (Vercel → Project → Settings → Environment Variables):
 //   GEMINI_API_KEY   required — from https://aistudio.google.com/apikey
 //   GEMINI_MODEL     optional — defaults to gemini-3.8-flash
+//   ACCESS_CODES     optional — comma-separated codes; if set, only these codes can use the AI
 
 const MODEL = process.env.GEMINI_MODEL || "gemini-3.8-flash";
 const API_BASE = (process.env.GEMINI_API_BASE || "https://generativelanguage.googleapis.com").replace(/\/$/, "");
@@ -38,13 +39,19 @@ export default async function handler(req, res) {
     return sendJson(res, 405, { error: "Use POST." });
   }
 
+  let body;
+  try { body = await readJson(req); } catch (e) { return sendJson(res, 400, { error: "Invalid JSON body." }); }
+
+  // Access codes: only people with a code listed in ACCESS_CODES can use the AI.
+  if (!hasAccess(req)) {
+    return sendJson(res, 401, { error: "The AI tutor is for approved users. Click Log in and enter your access code." });
+  }
+  if (body && body.check) return sendJson(res, 200, { ok: true }); // used by the Log in box
+
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     return sendJson(res, 500, { error: "The AI tutor isn't set up yet: add a GEMINI_API_KEY environment variable in Vercel and redeploy." });
   }
-
-  let body;
-  try { body = await readJson(req); } catch (e) { return sendJson(res, 400, { error: "Invalid JSON body." }); }
 
   // Backwards compatible with the old site, which sent { prompt, subject }.
   if (body && typeof body.prompt === "string" && !Array.isArray(body.messages)) {
@@ -218,6 +225,15 @@ async function readJson(req) {
     chunks.push(c);
   }
   return JSON.parse(Buffer.concat(chunks).toString("utf8") || "{}");
+}
+
+// ACCESS_CODES is a comma-separated list set in Vercel, e.g. "amira-4821,omar-9302".
+// If it is empty or missing, the AI is open to everyone.
+function hasAccess(req) {
+  const codes = (process.env.ACCESS_CODES || "").split(",").map(function (c) { return c.trim(); }).filter(Boolean);
+  if (!codes.length) return true;
+  const given = String(req.headers["x-access-code"] || "").trim();
+  return given !== "" && codes.indexOf(given) >= 0;
 }
 
 function sendJson(res, status, obj) {
