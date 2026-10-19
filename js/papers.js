@@ -56,7 +56,7 @@ function drawSubjects() {
 
 function fb(label, key) {
   return pdfs[key]
-    ? "<a class='btn sm' href='" + esc(pdfs[key]) + "' target='_blank' rel='noopener'>" + label + "</a>"
+    ? "<a class='btn sm' href='papers/" + esc(pdfs[key]) + "' target='_blank' rel='noopener'>" + label + "</a>"
     : "<button class='btn sm' data-ph>" + label + "</button>";
 }
 
