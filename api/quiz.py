@@ -16,6 +16,7 @@ Response JSON:
 Environment variables:
     GEMINI_API_KEY   required
     GEMINI_MODEL     optional, defaults to gemini-3.8-flash
+    ACCESS_CODES     optional, comma-separated codes; if set, only these codes can use AI quizzes
 
 Uses only the Python standard library, so no requirements.txt is needed.
 """
@@ -228,6 +229,14 @@ def handle_request(body, api_key):
         return 504, {"error": "The AI took too long to respond. Try fewer questions."}
 
 
+def has_access(given):
+    """ACCESS_CODES is a comma-separated list set in Vercel. Empty or missing means open to everyone."""
+    codes = [c.strip() for c in os.environ.get("ACCESS_CODES", "").split(",") if c.strip()]
+    if not codes:
+        return True
+    return bool(given) and given.strip() in codes
+
+
 class handler(BaseHTTPRequestHandler):
     def _send(self, status, obj):
         payload = json.dumps(obj).encode("utf-8")
@@ -249,6 +258,8 @@ class handler(BaseHTTPRequestHandler):
             body = json.loads(self.rfile.read(length).decode("utf-8") or "{}")
         except (ValueError, UnicodeDecodeError):
             return self._send(400, {"error": "Invalid JSON body."})
+        if not has_access(self.headers.get("X-Access-Code")):
+            return self._send(401, {"error": "AI quizzes are for approved users. Click Log in and enter your access code, or use the question bank."})
         status, result = handle_request(body, os.environ.get("GEMINI_API_KEY"))
         self._send(status, result)
 
