@@ -19,7 +19,7 @@ export function setSubject(s, opts) {
 export function applyTheme(s) {
   const v = s
     ? { h: s[2], s: s[3], a: s[4], l: s[5], is: s[3] === "0%" ? "0%" : "40%" }
-    : { h: 150, s: "40%", a: "65%", l: "58%", is: "40%" };
+    : { h: 150, s: "18%", a: "80%", l: "52%", is: "40%" };
   root.setProperty("--h", v.h);
   root.setProperty("--s", v.s);
   root.setProperty("--a", v.a);
