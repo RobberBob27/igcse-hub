@@ -4,6 +4,7 @@ import { initPapers, refreshPapers, hasPapersPage } from "./papers.js";
 import { initTutor, onTutorShow, onGlobalSubject as tutorSubject } from "./tutor.js";
 import { initQuiz, onQuizShow, onGlobalSubject as quizSubject } from "./quiz.js";
 import { initQotd, qotdSubject } from "./qotd.js";
+import { initLogin } from "./login.js";
 
 const VIEWS = {
   home: { el: "top", title: "IGCSE Papers" },
@@ -86,6 +87,7 @@ initPapers({ showView: showView });
 initTutor({ goQuiz: function (o) { navigate("quiz", o); } });
 initQuiz({ goTutor: function (o) { navigate("ask-ai", o); } });
 initQotd();
+initLogin();
 
 // Direct load of #browse has no subject selected yet — fall back to the papers section.
 if (location.hash === "#browse") history.replaceState(null, "", "#papers");
