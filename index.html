@@ -28,7 +28,7 @@
     <a href="#ask-ai" data-route="ask-ai" class="nav-ai"><span class="spark" aria-hidden="true">✦</span>Ask AI</a>
     <a href="#quiz" data-route="quiz" class="nav-ai"><span class="spark" aria-hidden="true">✦</span>Quiz</a>
   </nav>
-  <button class="btn sm" data-ph>Log in</button>
+  <button class="btn sm" id="loginBtn" type="button">Log in</button>
 </div></header>
 
 <div id="main">
@@ -277,6 +277,20 @@
   <div>IGCSE Papers. Not affiliated with any exam board.</div>
   <nav aria-label="Footer"><a href="#subjects">Subjects</a><a href="#papers">Past papers</a><a href="#notes">Study content</a><a href="#ask-ai" data-route="ask-ai">Ask AI</a><a href="#quiz" data-route="quiz">Quiz</a><a href="#" data-ph>Contact</a></nav>
 </div></footer>
+
+<dialog id="loginDlg" class="login-dlg" aria-labelledby="loginTitle">
+  <form id="loginForm" class="login-form">
+    <h2 id="loginTitle">Log in</h2>
+    <p class="lead">Enter the access code you were given to use the AI tutor and AI quiz.</p>
+    <label class="lbl" for="loginCode">Access code</label>
+    <input id="loginCode" class="field" type="password" autocomplete="current-password" maxlength="100">
+    <p class="fine err" id="loginErr" role="alert"></p>
+    <div class="qactions">
+      <button class="btn primary" type="submit">Log in</button>
+      <button class="btn ghost" type="button" id="loginCancel">Cancel</button>
+    </div>
+  </form>
+</dialog>
 
 <div id="toast" role="status" aria-live="polite">Placeholder: add your file or link here.</div>
 </body>
