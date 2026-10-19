@@ -1,7 +1,7 @@
 // Quiz: questions come from the built-in bank (instant) or from AI via /api/quiz (Python function).
 // Plays them, scores them and tracks history.
 import { topics, generalTopics, findSubject, nm } from "./data.js";
-import { state, setSubject, store, esc, toast, fillSubjectSelect, segmented } from "./core.js";
+import { state, setSubject, store, esc, toast, fillSubjectSelect, segmented, getAccessCode, needLogin } from "./core.js";
 import { renderMarkdown, renderMath, setRich } from "./markdown.js";
 import { BANK } from "./quizbank.js";
 
