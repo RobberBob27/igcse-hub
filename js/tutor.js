@@ -1,6 +1,6 @@
 // AI tutor: multi-turn streaming chat with modes, photo questions, voice input and saved history.
 import { topics, generalTopics, findSubject, nm } from "./data.js";
-import { state, setSubject, store, esc, toast, fillSubjectSelect, segmented } from "./core.js";
+import { state, setSubject, store, esc, toast, fillSubjectSelect, segmented, getAccessCode, needLogin } from "./core.js";
 import { renderMarkdown, renderMath } from "./markdown.js";
 
 const STORE_KEY = "igcse.tutor.v2";
@@ -190,7 +190,7 @@ async function send(text, opts) {
   try {
     const res = await fetch("/api/chat", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "X-Access-Code": getAccessCode() },
       signal: controller.signal,
       body: JSON.stringify(buildPayload())
     });
@@ -198,6 +198,7 @@ async function send(text, opts) {
     if (!res.ok || type.indexOf("application/json") >= 0) {
       let msg = "The AI tutor is unavailable right now (" + res.status + ").";
       try { const j = await res.json(); if (j && j.error) msg = j.error; } catch (e) { /* not JSON */ }
+      if (res.status === 401) needLogin();
       throw new Error(msg);
     }
     if (!res.body || !res.body.getReader) {
