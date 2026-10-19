@@ -97,3 +97,12 @@ export function segmented(el, onChange) {
   });
   return { get: get, set: set };
 }
+
+// Access code for the AI features (see js/login.js).
+const CODE_KEY = "igcse.accessCode";
+export function getAccessCode() { return store.get(CODE_KEY, "") || ""; }
+export function setAccessCode(code) {
+  if (code) store.set(CODE_KEY, code); else store.remove(CODE_KEY);
+  document.dispatchEvent(new CustomEvent("access-change"));
+}
+export function needLogin() { document.dispatchEvent(new CustomEvent("need-login")); }
