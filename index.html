@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="dark">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Every Edexcel IGCSE past paper in one place, with an AI tutor and AI-generated practice quizzes.">
+<meta name="theme-color" content="#0c1a13">
+<title>IGCSE Papers</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23FFD84D'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='800' font-size='15' text-anchor='middle' fill='%231B1B14'%3EIG%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/styles.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+<script type="module" src="/js/main.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top"><div class="wrap bar">
+  <a class="logo" href="#top"><span>IGCSE</span>Papers</a>
+  <nav aria-label="Main">
+    <a href="#subjects">Subjects</a>
+    <a href="#papers">Past papers</a>
+    <a href="#notes">Study content</a>
+    <a href="#ask-ai" data-route="ask-ai" class="nav-ai"><span class="spark" aria-hidden="true">✦</span>Ask AI</a>
+    <a href="#quiz" data-route="quiz" class="nav-ai"><span class="spark" aria-hidden="true">✦</span>Quiz</a>
+  </nav>
+  <button class="btn sm" data-ph>Log in</button>
+</div></header>
+
+<div id="main">
+<!-- ============ HOME ============ -->
+<main id="top" data-view="home">
+<div class="wrap hero">
+ <div class="hero-main">
+  <h1>Every IGCSE past paper in one place.</h1>
+  <p>Pick a subject, choose a year and session, then open the question paper, mark scheme or examiner report. Stuck? Ask the AI tutor or generate a practice quiz.</p>
+  <div class="search-wrap" id="subjectSearchWrap">
+    <form class="search" id="subjectSearchForm" role="search" autocomplete="off">
+      <input id="subjectSearchInput" type="search" placeholder="Search a subject or paper code" aria-label="Search a subject or paper code" aria-autocomplete="list" aria-controls="subjectSearchDropdown" aria-expanded="false">
+      <button class="btn primary" type="submit">Search</button>
+    </form>
+    <div class="search-dropdown" id="subjectSearchDropdown" role="listbox" aria-label="Matching subjects"></div>
+  </div>
+  <div class="levels" role="group" aria-label="Exam board">
+    <button class="chip" aria-pressed="true">Edexcel</button>
+  </div>
+ </div>
+ <aside class="qotd" id="qotd" aria-label="Question of the day">
+  <div class="qotd-top"><span class="badge">Question of the day</span><span class="qotd-subj" id="qotdSubj"></span></div>
+  <div class="qotd-q md" id="qotdQ"></div>
+  <div class="qotd-opts" id="qotdOpts" role="group" aria-label="Answer options"></div>
+  <div class="qotd-fb md" id="qotdFb" hidden></div>
+  <div class="qotd-acts">
+    <button class="btn sm ghost" type="button" id="qotdNext">Another question</button>
+    <a class="btn sm" href="#quiz" data-route="quiz" id="qotdQuiz">Take a full quiz →</a>
+  </div>
+ </aside>
+</div>
+
+<section id="ai-tools" class="ai-band"><div class="wrap">
+  <div class="head"><h2>AI study tools</h2><span class="badge">Powered by Gemini</span></div>
+  <div class="ai-cards">
+    <a class="ai-card" href="#ask-ai" data-route="ask-ai">
+      <span class="ai-ico" aria-hidden="true">💬</span>
+      <b>Ask the AI tutor</b>
+      <small>Explanations, revision notes, worked examples and exam-style marking. Snap a photo of a question to get help with it.</small>
+      <span class="ai-go">Start a chat →</span>
+    </a>
+    <a class="ai-card" href="#quiz" data-route="quiz">
+      <span class="ai-ico" aria-hidden="true">🎯</span>
+      <b>Take a quiz</b>
+      <small>Over 100 ready-made questions across every subject, or AI-written questions on any topic. Hints, explanations and scores you can track.</small>
+      <span class="ai-go">Build a quiz →</span>
+    </a>
+    <div class="ai-card static" id="homeStats">
+      <span class="ai-ico" aria-hidden="true">📈</span>
+      <b>Your progress</b>
+      <div id="homeStatsText" class="stat-text">Take a quiz and your recent scores will appear here.</div>
+    </div>
+  </div>
+</div></section>
+
+<section id="subjects"><div class="wrap">
+  <div class="head"><h2>Subjects</h2><button class="btn sm" data-ph>View all subjects</button></div>
+  <div class="subjects" id="subjGrid"></div>
+</div></section>
+
+<section id="papers"><div class="wrap" id="paperSections"></div></section>
+
+<section id="notes"><div class="wrap">
+  <div class="head"><h2>Study content</h2></div>
+  <div class="tabs" role="group" aria-label="Content type">
+    <button class="chip" aria-pressed="true">Revision notes</button>
+    <button class="chip" aria-pressed="false">Topic summaries</button>
+    <button class="chip" aria-pressed="false">Formula sheets</button>
+    <button class="chip" aria-pressed="false">Syllabus</button>
+  </div>
+  <div class="notes" id="noteGrid"></div>
+  <div class="empty" style="margin-top:16px">More content will appear here. <button class="btn sm" data-ph style="margin-left:8px">Request a topic</button></div>
+</div></section>
+</main>
+
+<!-- ============ PAPERS PAGE ============ -->
+<main id="papersPage" data-view="papers" hidden><div class="wrap" style="padding-top:28px;padding-bottom:40px">
+  <button class="btn sm" id="backBtn">Back to subjects</button>
+  <div id="pageContent" style="margin-top:20px"></div>
+</div></main>
+
+<!-- ============ AI TUTOR ============ -->
+<main id="tutorPage" data-view="ask-ai" hidden><div class="wrap tutor-wrap">
+  <aside class="tutor-side" aria-label="Tutor settings">
+    <div class="side-block">
+      <label class="lbl" for="tutorSubject">Subject</label>
+      <select id="tutorSubject" class="field"></select>
+    </div>
+    <div class="side-block">
+      <span class="lbl" id="tierLbl">Tier</span>
+      <div class="seg" role="group" aria-labelledby="tierLbl" id="tutorTier">
+        <button type="button" data-v="Foundation" aria-pressed="false">Foundation</button>
+        <button type="button" data-v="Higher" aria-pressed="true">Higher</button>
+      </div>
+    </div>
+    <div class="side-block">
+      <span class="lbl" id="modeLbl">How should I help?</span>
+      <div class="modes" role="radiogroup" aria-labelledby="modeLbl" id="tutorModes"></div>
+    </div>
+    <div class="side-block side-actions">
+      <button class="btn sm" id="newChatBtn" type="button">＋ New chat</button>
+      <button class="btn sm" id="quizFromChatBtn" type="button">🎯 Quiz me on this</button>
+    </div>
+    <p class="fine">AI can make mistakes. Check key facts against your textbook and the official mark schemes.</p>
+  </aside>
+
+  <section class="chat" aria-label="AI tutor chat">
+    <div class="chat-log" id="chatLog" aria-live="polite">
+      <div class="chat-empty" id="chatEmpty">
+        <span class="badge">✦ AI tutor</span>
+        <h1>What would you like to revise today?</h1>
+        <p class="lead">Ask a question, name a topic, paste an exam answer for marking, or attach a photo of a question.</p>
+        <div class="suggest" id="tutorSuggest"></div>
+      </div>
+    </div>
+
+    <form class="composer" id="chatForm" autocomplete="off">
+      <div class="attach-preview" id="attachPreview" hidden></div>
+      <div class="composer-row">
+        <label class="icon-btn" title="Attach a photo of a question" aria-label="Attach a photo of a question">
+          <input type="file" id="chatImage" accept="image/png,image/jpeg,image/webp" hidden>
+          <span aria-hidden="true">📷</span>
+        </label>
+        <button type="button" class="icon-btn" id="micBtn" title="Speak your question" aria-label="Speak your question" hidden><span aria-hidden="true">🎙</span></button>
+        <textarea id="chatInput" rows="1" placeholder="e.g. Explain the difference between speed and velocity" aria-label="Message the AI tutor" maxlength="4000"></textarea>
+        <button class="btn primary send" type="submit" id="sendBtn" aria-label="Send">Send</button>
+      </div>
+      <div class="composer-hint"><span>Enter to send · Shift + Enter for a new line</span><span id="charCount"></span></div>
+    </form>
+  </section>
+</div></main>
+
+<!-- ============ AI QUIZ ============ -->
+<main id="quizPage" data-view="quiz" hidden><div class="wrap quiz-wrap">
+  <div class="quiz-main">
+    <!-- setup -->
+    <div id="quizSetup" class="qcard">
+      <span class="badge">Quiz</span>
+      <h1 class="qtitle">Test yourself on any topic.</h1>
+      <p class="lead">Start instantly with the built-in question bank, or let AI write fresh exam-style questions. Every question has a hint and a full explanation.</p>
+      <form id="quizForm" class="qform">
+        <div>
+          <span class="lbl" id="qsLbl">Questions from</span>
+          <div class="seg seg-lg" role="group" aria-labelledby="qsLbl" id="quizSource">
+            <button type="button" data-v="bank" aria-pressed="true">Question bank <small>instant</small></button>
+            <button type="button" data-v="ai" aria-pressed="false">✦ AI-generated <small>any topic</small></button>
+          </div>
+        </div>
+        <div class="qrow">
+          <div>
+            <label class="lbl" for="quizSubject">Subject</label>
+            <select id="quizSubject" class="field"></select>
+          </div>
+          <div class="grow">
+            <label class="lbl" for="quizTopic">Topic <span class="optional">(optional)</span></label>
+            <input id="quizTopic" class="field" type="text" maxlength="120" placeholder="e.g. Electrolysis, Simultaneous equations">
+          </div>
+        </div>
+        <div class="suggest small" id="quizTopicSuggest"></div>
+        <div class="qrow">
+          <div id="quizDiffWrap">
+            <span class="lbl" id="qdLbl">Difficulty</span>
+            <div class="seg" role="group" aria-labelledby="qdLbl" id="quizDifficulty">
+              <button type="button" data-v="Foundation" aria-pressed="false">Foundation</button>
+              <button type="button" data-v="Mixed" aria-pressed="true">Mixed</button>
+              <button type="button" data-v="Higher" aria-pressed="false">Higher</button>
+            </div>
+          </div>
+          <div>
+            <span class="lbl" id="qcLbl">Questions</span>
+            <div class="seg" role="group" aria-labelledby="qcLbl" id="quizCount">
+              <button type="button" data-v="5" aria-pressed="true">5</button>
+              <button type="button" data-v="10" aria-pressed="false">10</button>
+              <button type="button" data-v="15" aria-pressed="false">15</button>
+            </div>
+          </div>
+        </div>
+        <div class="qactions">
+          <button class="btn primary" type="submit" id="quizGo">Generate quiz</button>
+          <button class="btn sm" type="button" id="quizFallback" hidden>Use the question bank instead</button>
+          <span class="fine err" id="quizErr" role="alert"></span>
+        </div>
+      </form>
+    </div>
+
+    <!-- loading -->
+    <div id="quizLoading" class="qcard" hidden>
+      <div class="loader"><span></span><span></span><span></span></div>
+      <h2 id="quizLoadingText">Writing your questions…</h2>
+      <div class="sk"></div><div class="sk s"></div><div class="sk"></div><div class="sk"></div>
+    </div>
+
+    <!-- play -->
+    <div id="quizPlay" class="qcard" hidden>
+      <div class="qhead">
+        <div><small id="quizMeta" class="muted"></small><div id="quizProgressText" class="qprog-text"></div></div>
+        <div class="qscore" id="quizScore">0 / 0</div>
+      </div>
+      <div class="qbar" role="progressbar" aria-label="Quiz progress" aria-valuemin="0" id="quizBarWrap"><div id="quizBar"></div></div>
+      <div class="qtopic" id="qTopic"></div>
+      <div class="qtext md" id="qText"></div>
+      <div class="opts" id="qOpts" role="group" aria-label="Answer options"></div>
+      <div class="qhint" id="qHint" hidden></div>
+      <div class="qfeedback" id="qFeedback" hidden></div>
+      <div class="qnav">
+        <button class="btn sm" type="button" id="qHintBtn">💡 Hint</button>
+        <button class="btn sm ghost" type="button" id="qQuit">End quiz</button>
+        <button class="btn primary" type="button" id="qNext" hidden>Next question →</button>
+      </div>
+      <p class="fine kbd-hint">Tip: press 1–4 to answer, H for a hint, Enter for the next question.</p>
+    </div>
+
+    <!-- results -->
+    <div id="quizResults" class="qcard" hidden>
+      <div class="res-top">
+        <div class="ring" id="resRing"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" class="ring-bg"/><circle cx="60" cy="60" r="52" class="ring-fg" id="resArc"/></svg><b id="resPct">0%</b></div>
+        <div>
+          <h2 id="resHeadline">Nice work</h2>
+          <p class="lead" id="resSub"></p>
+          <div class="qactions">
+            <button class="btn primary" type="button" id="resRetry">Retry incorrect</button>
+            <button class="btn" type="button" id="resNew">New quiz</button>
+            <button class="btn" type="button" id="resTutor">💬 Go over mistakes with AI</button>
+          </div>
+        </div>
+      </div>
+      <h3 class="rev-h">Review</h3>
+      <ol class="review" id="resReview"></ol>
+    </div>
+  </div>
+
+  <aside class="quiz-side" aria-label="Quiz history">
+    <div class="side-block">
+      <div class="head tight"><h3>Recent quizzes</h3><button class="btn sm ghost" id="histClear" type="button">Clear</button></div>
+      <ul class="hist" id="histList"></ul>
+    </div>
+    <div class="side-block">
+      <h3>Topics to revisit</h3>
+      <ul class="weak" id="weakList"></ul>
+    </div>
+  </aside>
+</div></main>
+</div>
+
+<footer><div class="wrap foot">
+  <div>IGCSE Papers. Not affiliated with any exam board.</div>
+  <nav aria-label="Footer"><a href="#subjects">Subjects</a><a href="#papers">Past papers</a><a href="#notes">Study content</a><a href="#ask-ai" data-route="ask-ai">Ask AI</a><a href="#quiz" data-route="quiz">Quiz</a><a href="#" data-ph>Contact</a></nav>
+</div></footer>
+
+<div id="toast" role="status" aria-live="polite">Placeholder: add your file or link here.</div>
+</body>
+</html>

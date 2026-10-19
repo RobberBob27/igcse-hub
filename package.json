@@ -1,0 +1,13 @@
+{
+  "name": "igcse-papers",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Edexcel IGCSE past papers with an AI tutor and AI-generated quizzes.",
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "engines": {
+    "node": "22.x"
+  }
+}
