@@ -45,7 +45,7 @@ export function initTutor(opts) {
   // restore saved chat
   const saved = store.get(STORE_KEY, null);
   if (saved && Array.isArray(saved.messages)) {
-    messages = saved.messages.filter(function (m) { return m && (m.role === "user" || m.role === "model") && typeof m.text === "string"; });
+    // Chats are not restored: the tutor starts fresh every time the page is opened.
     if (saved.tier) tier.set(saved.tier);
     if (saved.mode) mode = saved.mode;
     if (typeof saved.subject === "string") el.tutorSubject.value = saved.subject;
@@ -105,6 +105,11 @@ export function initTutor(opts) {
 
   setupVoice();
   drawAll();
+
+  // Logging out clears the chat (but not while an answer is loading).
+  document.addEventListener("access-change", function () {
+    if (!getAccessCode() && !controller) { messages = []; clearImage(); drawAll(); }
+  });
 }
 
 // Called when the tutor view is shown.
@@ -444,9 +449,7 @@ function save() {
     subject: el.tutorSubject.value,
     tier: tier.get(),
     mode: mode,
-    messages: messages.filter(function (m) { return m.text; }).slice(-MAX_SAVED).map(function (m) {
-      return { role: m.role, text: m.text, mode: m.mode, hadImage: !!(m.hadImage || m.img) };
-    })
+    messages: [] // chats are not kept between visits
   });
 }
 
